@@ -11,4 +11,11 @@ output:
 
 ## Project thoughts
 
-I am interested in exploring data related to...
+This project uses data from the 2018 ANES Pilot Study, a nationally representative survey of American adults conducted by the American National Election Studies program, a collaboration between Stanford University and the University of Michigan. The ANES contains a wide range of demographic and attitudinal variables, making it well-suited for studying the relationship between socioeconomic status and political behavior. My research question is "does individual income predict party identification among American adults?" My hypothesis is that both high-income and low-income individuals are more likely to identify as Democrat, while middle-income individuals are more likely to identify as Republican. This hypothesis is based  in the idea that the Democratic Party appeals and targets the opposite ends of the income distribution. Lower-income voters tend to support Democrats because of the party's emphasis on social programs, redistribution, and workers' rights, which directly benefit them economically. Higher-income voters, particularly those who are college-educated and in professional occupations, have increasingly shifted toward the Democratic Party due to its positions on social issues such as civil rights, immigration, and climate change, which align with the values common in wealthy, urban, and educated communities. Middle-income voters, by contrast, tend to prioritize economic concerns like taxation and small business interests, which align more closely with the Republican Party. My explanatory variable is household income, measured as an ordinal categorical variable in the 2018 ANES Pilot Study (the faminc_new variable), which captures respondents' self-reported family income brackets. My outcome variable is party identification, measured using the pid7 variable, which captures whether respondents identify as Democrat, Republican, or Independent. A pattern in the data where both the lowest and highest income groups show stronger Democratic identification compared to middle-income respondents would support my hypothesis. Otherwise, if party identification increases or decreases with income, that would disprove it.
+```{r}
+library(tidyverse)
+
+anes <- read_csv("anes_pilot_2018.csv")
+
+head(anes)
+```
