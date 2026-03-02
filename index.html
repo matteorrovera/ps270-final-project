@@ -116,7 +116,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   <!--/radix_placeholder_rmarkdown_metadata-->
   
   <script type="text/json" id="radix-resource-manifest">
-  {"type":"character","attributes":{},"value":["index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
+  {"type":"character","attributes":{},"value":["anes_pilot_2018.csv","index_files/anchor-4.2.2/anchor.min.js","index_files/bowser-1.9.3/bowser.min.js","index_files/distill-2.2.21/template.v2.js","index_files/header-attrs-2.17/header-attrs.js","index_files/header-attrs-2.30/header-attrs.js","index_files/jquery-3.6.0/jquery-3.6.0.js","index_files/jquery-3.6.0/jquery-3.6.0.min.js","index_files/jquery-3.6.0/jquery-3.6.0.min.map","index_files/popper-2.6.0/popper.min.js","index_files/tippy-6.2.7/tippy-bundle.umd.min.js","index_files/tippy-6.2.7/tippy-light-border.css","index_files/tippy-6.2.7/tippy.css","index_files/tippy-6.2.7/tippy.umd.min.js","index_files/webcomponents-2.0.0/webcomponents.js"]}
   </script>
   <!--radix_placeholder_navigation_in_header-->
   <!--/radix_placeholder_navigation_in_header-->
@@ -1544,9 +1544,34 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 </div>
 
 <div class="d-article">
-<h2 id="project-thoughts">Project thoughts</h2>
-<p>I am interested in exploring data related to…</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
+<h2 id="project-thoughts">## Project thoughts</h2>
+<h2 id="this-project-uses-data-from-the-2018-anes-pilot-study-a-nationally-representative-survey-of-american-adults-conducted-by-the-american-national-election-studies-program-a-collaboration-between-stanford-university-and-the-university-of-michigan.-the-anes-contains-a-wide-range-of-demographic-and-attitudinal-variables-making-it-well-suited-for-studying-the-relationship-between-socioeconomic-status-and-political-behavior.-my-research-question-is-does-individual-income-predict-party-identification-among-american-adults-my-hypothesis-is-that-both-high-income-and-low-income-individuals-are-more-likely-to-identify-as-democrat-while-middle-income-individuals-are-more-likely-to-identify-as-republican.-this-hypothesis-is-based-in-the-idea-that-the-democratic-party-appeals-and-targets-the-opposite-ends-of-the-income-distribution.-lower-income-voters-tend-to-support-democrats-because-of-the-partys-emphasis-on-social-programs-redistribution-and-workers-rights-which-directly-benefit-them-economically.-higher-income-voters-particularly-those-who-are-college-educated-and-in-professional-occupations-have-increasingly-shifted-toward-the-democratic-party-due-to-its-positions-on-social-issues-such-as-civil-rights-immigration-and-climate-change-which-align-with-the-values-common-in-wealthy-urban-and-educated-communities.-middle-income-voters-by-contrast-tend-to-prioritize-economic-concerns-like-taxation-and-small-business-interests-which-align-more-closely-with-the-republican-party.-my-explanatory-variable-is-household-income-measured-as-an-ordinal-categorical-variable-in-the-2018-anes-pilot-study-the-faminc_new-variable-which-captures-respondents-self-reported-family-income-brackets.-my-outcome-variable-is-party-identification-measured-using-the-pid7-variable-which-captures-whether-respondents-identify-as-democrat-republican-or-independent.-a-pattern-in-the-data-where-both-the-lowest-and-highest-income-groups-show-stronger-democratic-identification-compared-to-middle-income-respondents-would-support-my-hypothesis.-otherwise-if-party-identification-increases-or-decreases-with-income-that-would-disprove-it.">This project uses data from the 2018 ANES Pilot Study, a nationally representative survey of American adults conducted by the American National Election Studies program, a collaboration between Stanford University and the University of Michigan. The ANES contains a wide range of demographic and attitudinal variables, making it well-suited for studying the relationship between socioeconomic status and political behavior. My research question is “does individual income predict party identification among American adults?” My hypothesis is that both high-income and low-income individuals are more likely to identify as Democrat, while middle-income individuals are more likely to identify as Republican. This hypothesis is based in the idea that the Democratic Party appeals and targets the opposite ends of the income distribution. Lower-income voters tend to support Democrats because of the party’s emphasis on social programs, redistribution, and workers’ rights, which directly benefit them economically. Higher-income voters, particularly those who are college-educated and in professional occupations, have increasingly shifted toward the Democratic Party due to its positions on social issues such as civil rights, immigration, and climate change, which align with the values common in wealthy, urban, and educated communities. Middle-income voters, by contrast, tend to prioritize economic concerns like taxation and small business interests, which align more closely with the Republican Party. My explanatory variable is household income, measured as an ordinal categorical variable in the 2018 ANES Pilot Study (the faminc_new variable), which captures respondents’ self-reported family income brackets. My outcome variable is party identification, measured using the pid7 variable, which captures whether respondents identify as Democrat, Republican, or Independent. A pattern in the data where both the lowest and highest income groups show stronger Democratic identification compared to middle-income respondents would support my hypothesis. Otherwise, if party identification increases or decreases with income, that would disprove it.</h2>
+<div class="layout-chunk" data-layout="l-body">
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
+<span></span>
+<span><span class='va'>anes</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://readr.tidyverse.org/reference/read_delim.html'>read_csv</a></span><span class='op'>(</span><span class='st'>"anes_pilot_2018.csv"</span><span class='op'>)</span></span>
+<span></span>
+<span><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='va'>anes</span><span class='op'>)</span></span></code></pre>
+</div>
+<pre><code># A tibble: 6 × 767
+  version caseid weight weight_spss  form follow addtime   reg whenreg
+  &lt;chr&gt;    &lt;dbl&gt;  &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;
+1 ANES 2…      1  1.26        0.729     1      4       2     1       4
+2 ANES 2…      2  0.569       0.331     2      1       2     3      -1
+3 ANES 2…      3  0.972       0.564     1      4       3     3      -1
+4 ANES 2…      4  2.45        1.42      1      4       2     1       4
+5 ANES 2…      5  1.63        0.949     2      1       3     1       4
+6 ANES 2…      6  1.82        1.06      1      3       2     2       2
+# ℹ 758 more variables: howreg &lt;dbl&gt;, howreg_os &lt;chr&gt;, regdiff &lt;dbl&gt;,
+#   turnout18 &lt;dbl&gt;, turnout18ns &lt;dbl&gt;, turnout18w &lt;dbl&gt;,
+#   votehard &lt;dbl&gt;, vharder1 &lt;dbl&gt;, vharder2 &lt;dbl&gt;, vharder3 &lt;dbl&gt;,
+#   vharder4 &lt;dbl&gt;, vharder5 &lt;dbl&gt;, vharder6 &lt;dbl&gt;, vharder7 &lt;dbl&gt;,
+#   vharder8 &lt;dbl&gt;, vharder9 &lt;dbl&gt;, vharder10 &lt;dbl&gt;, vharder11 &lt;dbl&gt;,
+#   vharder12 &lt;dbl&gt;, vharder11os &lt;chr&gt;, waittime &lt;dbl&gt;,
+#   triptime &lt;dbl&gt;, house18t &lt;dbl&gt;, house18p &lt;dbl&gt;, …</code></pre>
+</div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
 <!--/radix_placeholder_article_footer-->
 </div>
