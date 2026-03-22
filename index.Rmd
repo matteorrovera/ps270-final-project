@@ -1,22 +1,65 @@
 ---
 title: "PS270 Final Project"
 author: "Matteo Rovera"
-description: "My final project"
 output:
   distill::distill_article:
     self_contained: false
 ---
 
-
-
 ## Project thoughts
----
-This project uses data from the 2018 ANES Pilot Study, a nationally representative survey of American adults conducted by the American National Election Studies program, a collaboration between Stanford University and the University of Michigan. The ANES contains a wide range of demographic and attitudinal variables, making it well-suited for studying the relationship between socioeconomic status and political behavior. My research question is "does individual income predict party identification among American adults?" My hypothesis is that both high-income and low-income individuals are more likely to identify as Democrat, while middle-income individuals are more likely to identify as Republican. This hypothesis is based  in the idea that the Democratic Party appeals and targets the opposite ends of the income distribution. Lower-income voters tend to support Democrats because of the party's emphasis on social programs, redistribution, and workers' rights, which directly benefit them economically. Higher-income voters, particularly those who are college-educated and in professional occupations, have increasingly shifted toward the Democratic Party due to its positions on social issues such as civil rights, immigration, and climate change, which align with the values common in wealthy, urban, and educated communities. Middle-income voters, by contrast, tend to prioritize economic concerns like taxation and small business interests, which align more closely with the Republican Party. My explanatory variable is household income, measured as an ordinal categorical variable in the 2018 ANES Pilot Study (the faminc_new variable), which captures respondents' self-reported family income brackets. My outcome variable is party identification, measured using the pid7 variable, which captures whether respondents identify as Democrat, Republican, or Independent. A pattern in the data where both the lowest and highest income groups show stronger Democratic identification compared to middle-income respondents would support my hypothesis. Otherwise, if party identification increases or decreases with income, that would disprove it.
----
+
+This project uses data from the 2018 ANES Pilot Study, a nationally representative survey of American adults conducted by the American National Election Studies program, a collaboration between Stanford University and the University of Michigan. The ANES contains a wide range of demographic and attitudinal variables, making it well-suited for studying the relationship between socioeconomic status and political behavior. My research question is "does individual income predict party identification among American adults?" My hypothesis is that both high-income and low-income individuals are more likely to identify as Democrat, while middle-income individuals are more likely to identify as Republican. This hypothesis is based in the idea that the Democratic Party appeals and targets the opposite ends of the income distribution. Lower-income voters tend to support Democrats because of the party's emphasis on social programs, redistribution, and workers' rights, which directly benefit them economically. Higher-income voters, particularly those who are college-educated and in professional occupations, have increasingly shifted toward the Democratic Party due to its positions on social issues such as civil rights, immigration, and climate change, which align with the values common in wealthy, urban, and educated communities. Middle-income voters, by contrast, tend to prioritize economic concerns like taxation and small business interests, which align more closely with the Republican Party. My explanatory variable is household income, measured as an ordinal categorical variable in the 2018 ANES Pilot Study (the faminc_new variable), which captures respondents' self-reported family income brackets. My outcome variable is party identification, measured using the pid7 variable, which captures whether respondents identify as Democrat, Republican, or Independent. A pattern in the data where both the lowest and highest income groups show stronger Democratic identification compared to middle-income respondents would support my hypothesis. Otherwise, if party identification increases or decreases with income, that would disprove it.
+
 ```{r}
 library(tidyverse)
 
 anes <- read_csv("anes_pilot_2018.csv")
 
-head(anes)
+anes_clean <- anes |>
+  mutate(party = case_when(
+    pid1d %in% c(1, 2, 3) ~ "Democrat",
+    pid1r %in% c(1, 2, 3) ~ "Republican",
+    pidlean == 1 ~ "Independent",
+    pidlean == 3 ~ "Independent",
+    pidlean == 2 ~ "Independent",
+    TRUE ~ NA_character_
+  )) |>
+  filter(!is.na(party), faminc_new <= 16) |>
+  mutate(income_group = case_when(
+    faminc_new <= 3  ~ "Under $20k",
+    faminc_new <= 5  ~ "$20k–$35k",
+    faminc_new <= 7  ~ "$35k–$65k",
+    faminc_new <= 9  ~ "$65k–$100k",
+    faminc_new <= 11 ~ "$100k–$175k",
+    faminc_new >= 12 ~ "Over $175k"
+  ),
+  income_group = factor(income_group, levels = c(
+    "Under $20k", "$20k–$35k", "$35k–$65k",
+    "$65k–$100k", "$100k–$175k", "Over $175k"
+  )),
+  party = factor(party, levels = c("Democrat", "Independent", "Republican")))
+
+plot_data <- anes_clean |>
+  count(income_group, party) |>
+  group_by(income_group) |>
+  mutate(pct = n / sum(n) * 100)
+
+ggplot(plot_data, aes(x = income_group, y = pct, fill = party)) +
+  geom_col(position = "fill") +
+  scale_fill_manual(values = c("Democrat" = "#2166AC", "Independent" = "#878787", "Republican" = "#D6373B")) +
+  scale_y_continuous(labels = scales::percent) +
+  labs(
+    title = "Party Identification by Household Income",
+    subtitle = "2018 ANES Pilot Study",
+    x = "Household Income",
+    y = "Percentage of Respondents",
+    fill = "Party",
+    caption = "Source: American National Election Studies 2018 Pilot Study"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 25, hjust = 1),
+    plot.title = element_text(face = "bold"),
+    plot.caption = element_text(color = "gray50", size = 8)
+  )
 ```
