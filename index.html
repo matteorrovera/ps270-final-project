@@ -1543,6 +1543,7 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <div class="d-article">
 <h2 id="project-thoughts">Project thoughts</h2>
 <p>This project uses data from the 2018 ANES Pilot Study, a nationally representative survey of American adults conducted by the American National Election Studies program, a collaboration between Stanford University and the University of Michigan. The ANES contains a wide range of demographic and attitudinal variables, making it well-suited for studying the relationship between socioeconomic status and political behavior. My research question is “does individual income predict party identification among American adults?” My hypothesis is that both high-income and low-income individuals are more likely to identify as Democrat, while middle-income individuals are more likely to identify as Republican. This hypothesis is based in the idea that the Democratic Party appeals and targets the opposite ends of the income distribution. Lower-income voters tend to support Democrats because of the party’s emphasis on social programs, redistribution, and workers’ rights, which directly benefit them economically. Higher-income voters, particularly those who are college-educated and in professional occupations, have increasingly shifted toward the Democratic Party due to its positions on social issues such as civil rights, immigration, and climate change, which align with the values common in wealthy, urban, and educated communities. Middle-income voters, by contrast, tend to prioritize economic concerns like taxation and small business interests, which align more closely with the Republican Party. My explanatory variable is household income, measured as an ordinal categorical variable in the 2018 ANES Pilot Study (the faminc_new variable), which captures respondents’ self-reported family income brackets. My outcome variable is party identification, measured using the pid7 variable, which captures whether respondents identify as Democrat, Republican, or Independent. A pattern in the data where both the lowest and highest income groups show stronger Democratic identification compared to middle-income respondents would support my hypothesis. Otherwise, if party identification increases or decreases with income, that would disprove it.</p>
+<p>The data partially support my hypothesis. Lower-income groups show stronger Democratic identification, consistent with the expectation that economic redistribution appeals to this group. However, the pattern at the top of the income distribution is less clear — higher-income respondents do lean Democratic relative to middle-income groups, but the difference is modest. Republican identification peaks in the middle income brackets, which aligns with my hypothesis. Overall, the U-shaped pattern I predicted is weakly present but not as pronounced as expected.</p>
 <div class="layout-chunk" data-layout="l-body">
 <div class="sourceCode">
 <pre class="sourceCode r"><code class="sourceCode r"><span><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://tidyverse.tidyverse.org'>tidyverse</a></span><span class='op'>)</span></span>
@@ -1578,10 +1579,11 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/group_by.html'>group_by</a></span><span class='op'>(</span><span class='va'>income_group</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
 <span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pct <span class='op'>=</span> <span class='va'>n</span> <span class='op'>/</span> <span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>n</span><span class='op'>)</span> <span class='op'>*</span> <span class='fl'>100</span><span class='op'>)</span></span>
 <span></span>
+<span><span class='co'># Visualization</span></span>
 <span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/ggplot.html'>ggplot</a></span><span class='op'>(</span><span class='va'>plot_data</span>, <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/aes.html'>aes</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='va'>income_group</span>, y <span class='op'>=</span> <span class='va'>pct</span>, fill <span class='op'>=</span> <span class='va'>party</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"fill"</span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/geom_bar.html'>geom_col</a></span><span class='op'>(</span>position <span class='op'>=</span> <span class='st'>"dodge"</span>, width <span class='op'>=</span> <span class='fl'>0.75</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_manual.html'>scale_fill_manual</a></span><span class='op'>(</span>values <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Democrat"</span> <span class='op'>=</span> <span class='st'>"#2166AC"</span>, <span class='st'>"Independent"</span> <span class='op'>=</span> <span class='st'>"#878787"</span>, <span class='st'>"Republican"</span> <span class='op'>=</span> <span class='st'>"#D6373B"</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
-<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='va'><a href='https://scales.r-lib.org/reference/percent_format.html'>percent</a></span><span class='op'>)</span> <span class='op'>+</span></span>
+<span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/scale_continuous.html'>scale_y_continuous</a></span><span class='op'>(</span>labels <span class='op'>=</span> <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org/reference/label_number.html'>label_number</a></span><span class='op'>(</span>suffix <span class='op'>=</span> <span class='st'>"%"</span><span class='op'>)</span>, limits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>55</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>+</span></span>
 <span>  <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/labs.html'>labs</a></span><span class='op'>(</span></span>
 <span>    title <span class='op'>=</span> <span class='st'>"Party Identification by Household Income"</span>,</span>
 <span>    subtitle <span class='op'>=</span> <span class='st'>"2018 ANES Pilot Study"</span>,</span>
@@ -1597,7 +1599,65 @@ code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
 <span>    plot.caption <span class='op'>=</span> <span class='fu'><a href='https://ggplot2.tidyverse.org/reference/element.html'>element_text</a></span><span class='op'>(</span>color <span class='op'>=</span> <span class='st'>"gray50"</span>, size <span class='op'>=</span> <span class='fl'>8</span><span class='op'>)</span></span>
 <span>  <span class='op'>)</span></span></code></pre>
 </div>
-<p><img src="index_files/figure-html5/unnamed-chunk-1-1.png" alt="" width="624" /></p>
+<img src="index_files/figure-html5/unnamed-chunk-1-1.png" alt="" width="624" />
+<div class="sourceCode">
+<pre class="sourceCode r"><code class="sourceCode r"><span><span class='co'># Results table</span></span>
+<span><span class='va'>plot_data</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span><span class='op'>(</span>pct <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Round.html'>round</a></span><span class='op'>(</span><span class='va'>pct</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/select.html'>select</a></span><span class='op'>(</span><span class='va'>income_group</span>, <span class='va'>party</span>, <span class='va'>pct</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://tidyr.tidyverse.org/reference/pivot_wider.html'>pivot_wider</a></span><span class='op'>(</span>names_from <span class='op'>=</span> <span class='va'>party</span>, values_from <span class='op'>=</span> <span class='va'>pct</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'><a href='https://dplyr.tidyverse.org/reference/rename.html'>rename</a></span><span class='op'>(</span>`Income Group` <span class='op'>=</span> <span class='va'>income_group</span><span class='op'>)</span> <span class='op'>|&gt;</span></span>
+<span>  <span class='fu'>knitr</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/knitr/man/kable.html'>kable</a></span><span class='op'>(</span>caption <span class='op'>=</span> <span class='st'>"Party Identification by Income Group (% of respondents)"</span><span class='op'>)</span></span></code></pre>
+</div>
+<table>
+<caption><span id="tab:unnamed-chunk-1">Table 1: </span>Party Identification by Income Group (% of respondents)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Income Group</th>
+<th style="text-align: right;">Democrat</th>
+<th style="text-align: right;">Independent</th>
+<th style="text-align: right;">Republican</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Under $20k</td>
+<td style="text-align: right;">43.8</td>
+<td style="text-align: right;">11.7</td>
+<td style="text-align: right;">44.5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$20k–$35k</td>
+<td style="text-align: right;">47.3</td>
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">47.8</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$35k–$65k</td>
+<td style="text-align: right;">47.4</td>
+<td style="text-align: right;">5.4</td>
+<td style="text-align: right;">47.1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">$65k–$100k</td>
+<td style="text-align: right;">46.3</td>
+<td style="text-align: right;">4.3</td>
+<td style="text-align: right;">49.4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">$100k–$175k</td>
+<td style="text-align: right;">45.4</td>
+<td style="text-align: right;">5.2</td>
+<td style="text-align: right;">49.4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Over $175k</td>
+<td style="text-align: right;">54.8</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">42.7</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r distill-force-highlighting-css"><code class="sourceCode r"></code></pre></div>
 <!--radix_placeholder_article_footer-->
